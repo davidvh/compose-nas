@@ -1,0 +1,95 @@
+version: "3.9"
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - SUBDOMAINS=${SUBDOMAIN}
+      - TOKEN=${DUCKDNS_TOKEN}
+    restart: unless-stopped
+  swag:
+    # Create configs from https://github.com/linuxserver/reverse-proxy-confs
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - URL=${HOSTNAME}
+      - VALIDATION=duckdns
+      - SUBDOMAINS=wildcard
+      - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
+      - EMAIL=davidvh@gmail.com
+    volumes:
+      - swag_config:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
+  webtop:
+    image: lscr.io/linuxserver/webtop:latest
+    container_name: webtop
+    volumes:
+      - webtop_config:/config
+      - swag_config:/swag
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - JELLYFIN_PublishedServerUrl=jellyfin.${HOSTNAME}
+    volumes:
+      - jellyfin:/config
+      - movies:/data/movies
+      - shows:/data/shows
+      - music:/data/music
+      - books:/data/books
+      - photos:/data/photos
+    ports:
+      - "7359:7359/udp"
+      - "1900:1900/udp"
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    restart: always
+  heimdall:
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    volumes:
+      - ./heimdall:/config
+    restart: always
+
+networks:
+  default:
+    name: compose-nas
+
+volumes:
+  jellyfin:
+  swag_config:
+  webtop_config:
+  movies:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      device: "//${SMB_SRV}/Movies"
+  shows:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      device: "//${SMB_SRV}/tv"
+  books:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      device: "//${SMB_SRV}/Books"
+  music:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      device: "//${SMB_SRV}/Music"
+  photos:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      device: "//${SMB_SRV}/Photos"
