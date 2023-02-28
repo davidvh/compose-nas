@@ -53,6 +53,18 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
     restart: always
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    volumes:
+      - syncthing_config:/config
+      - books:/data/books
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
   heimdall:
     image: lscr.io/linuxserver/heimdall
     container_name: heimdall
@@ -67,29 +79,30 @@ networks:
 volumes:
   jellyfin:
   swag_config:
+  syncthing_config:
   webtop_config:
   movies:
     driver_opts:
       type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/Movies"
   shows:
     driver_opts:
       type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/tv"
   books:
     driver_opts:
       type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/Books"
   music:
     driver_opts:
       type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/Music"
   photos:
     driver_opts:
       type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV}"
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/Photos"
