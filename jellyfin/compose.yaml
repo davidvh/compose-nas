@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - JELLYFIN_PublishedServerUrl=jellyfin.${HOSTNAME}
+    volumes:
+      - /export/fast/jellyfin:/config
+      - movies:/data/movies
+      - shows:/data/shows
+      - music:/data/music
+      - books:/data/books
+      - photos:/data/photos
+    ports:
+      - "7359:7359/udp"
+      - "1900:1900/udp"
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    restart: always
+
+networks:
+  default:
+    name: compose-nas
+    external: true
+
+volumes:
+  movies:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/Movies"
+  shows:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/tv"
+  books:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/Books"
+  music:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/Music"
+  photos:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/Photos"

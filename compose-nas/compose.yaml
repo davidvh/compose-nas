@@ -18,9 +18,10 @@ services:
       - VALIDATION=duckdns
       - SUBDOMAINS=wildcard
       - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
-      - EMAIL=davidvh@gmail.com
+      - EMAIL=${ADMIN_EMAIL}
+      - CERTPROVIDER=zerossl
     volumes:
-      - swag_config:/config
+      - swag_nginx:/config/nginx
     ports:
       - 443:443
       - 80:80 #optional
@@ -29,30 +30,10 @@ services:
     image: lscr.io/linuxserver/webtop:latest
     container_name: webtop
     volumes:
-      - webtop_config:/config
-      - swag_config:/swag
+      - swag_nginx:/swag
     ports:
       - 3000:3000
     restart: unless-stopped
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin
-    container_name: jellyfin
-    environment:
-      - JELLYFIN_PublishedServerUrl=jellyfin.${HOSTNAME}
-    volumes:
-      - jellyfin:/config
-      - movies:/data/movies
-      - shows:/data/shows
-      - music:/data/music
-      - books:/data/books
-      - photos:/data/photos
-    ports:
-      - "7359:7359/udp"
-      - "1900:1900/udp"
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/card0:/dev/dri/card0
-    restart: always
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
@@ -77,32 +58,18 @@ networks:
     name: compose-nas
 
 volumes:
-  jellyfin:
-  swag_config:
+  swag_nginx:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
+      device: "//${SMB_SRV}/fast/swag_nginx"
   syncthing_config:
-  webtop_config:
-  movies:
     driver_opts:
       type: cifs
       o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
-      device: "//${SMB_SRV}/Movies"
-  shows:
-    driver_opts:
-      type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
-      device: "//${SMB_SRV}/tv"
+      device: "//${SMB_SRV}/fast/syncthing_config"
   books:
     driver_opts:
       type: cifs
       o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
       device: "//${SMB_SRV}/Books"
-  music:
-    driver_opts:
-      type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
-      device: "//${SMB_SRV}/Music"
-  photos:
-    driver_opts:
-      type: cifs
-      o: "username=${SMB_USER},password=${SMB_PASS},addr=${SMB_SRV},noperm"
-      device: "//${SMB_SRV}/Photos"
