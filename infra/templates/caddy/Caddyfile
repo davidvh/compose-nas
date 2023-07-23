@@ -97,6 +97,12 @@ tandoor.$HOSTNAME {
   reverse_proxy tandoor_frontend {
     import auth_proxy_list
   }
+
+komga.$HOSTNAME {
+  import duckdns
+  reverse_proxy komga:25600 {
+    import auth_proxy_list
+  }
 }
 
 wikijs.$HOSTNAME {
