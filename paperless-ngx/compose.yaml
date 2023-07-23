@@ -1,0 +1,57 @@
+services:
+  broker:
+    image: docker.io/library/redis:7
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+
+  db:
+    image: docker.io/library/postgres:15
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: ${PAPERLESSDBPASS}
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - data:/usr/src/paperless/data
+      - media:/usr/src/paperless/media
+      - /mnt/media/paperless/export:/usr/src/paperless/export
+      - /mnt/media/paperless/consume:/usr/src/paperless/consume
+    networks:
+      - default
+      - nas
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBPASS: ${PAPERLESSDBPASS}
+      PAPERLESS_URL: "https://paperless.${HOSTNAME}"
+      PAPERLESS_SECRET_KEY: ${PAPERLESSKEY}
+      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
+      PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.${HOSTNAME}/logout?rq=https://paperless.${HOSTNAME}
+
+volumes:
+  data:
+  media:
+  pgdata:
+  redisdata:
+
+networks:
+  default:
+  nas:
+    name: compose-nas
+    external: true

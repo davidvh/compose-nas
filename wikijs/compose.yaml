@@ -1,0 +1,26 @@
+services:
+  wikijs:
+    image: lscr.io/linuxserver/wikijs:latest
+    container_name: wikijs
+    environment:
+      - TZ=Etc/UTC
+      - DB_TYPE=sqlite
+    volumes:
+      - config:/config
+      - data:/data
+    networks:
+      - default
+      - auth
+    restart: unless-stopped
+
+networks:
+  default:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true
+
+volumes:
+  config:
+  data:

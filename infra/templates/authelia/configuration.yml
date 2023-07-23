@@ -1,0 +1,86 @@
+certificates_directory: /config/certificates/
+
+theme: dark
+
+jwt_secret: ${LLDAP_JWT_SECRET}
+
+server:
+  host: 0.0.0.0
+  port: 9091
+  path: ""
+telemetry:
+  metrics:
+    enabled: false
+    address: tcp://0.0.0.0:9959
+totp:
+  disable: false
+  issuer: authelia.${HOSTNAME}
+webauthn:
+  disable: false
+  timeout: 60s
+ntp:
+  address: "time.cloudflare.com:123"
+  max_desync: 3s
+
+authentication_backend:
+  password_reset:
+    disable: false
+  ldap:
+    implementation: custom
+    url: ldap://lldap:3890
+    timeout: 5s
+    start_tls: false
+    base_dn: dc=${SUBDOMAIN},DC=com
+    username_attribute: uid
+    additional_users_dn: OU=people
+    # To allow sign in both with username and email, one can use a filter like
+    # (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
+    users_filter: (&({username_attribute}={input})(objectClass=person))
+    additional_groups_dn: OU=groups
+    groups_filter: (member={dn})
+    group_name_attribute: cn
+    mail_attribute: mail
+    display_name_attribute: displayName
+    # The username and password of the admin or service user.
+    user: UID=admin,OU=people,DC=${SUBDOMAIN},DC=com
+    password: "${LLDAP_USERPASS}"
+
+password_policy:
+  standard:
+    enabled: false
+    min_length: 8
+    max_length: 0
+    require_uppercase: true
+    require_lowercase: true
+    require_number: true
+    require_special: true
+  zxcvbn:
+    enabled: false
+    min_score: 3
+
+# TODO: Strengthen
+access_control:
+  default_policy: one_factor
+
+session:
+  name: authelia_session
+  domain: ${HOSTNAME}
+  same_site: lax
+  expiration: 1h
+  inactivity: 5m
+  remember_me_duration: 1M
+
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 5m
+
+storage:
+  encryption_key: "${AUTHELIA_ENC_KEY}"
+  local:
+    path: /db/db.sqlite3
+
+notifier:
+  disable_startup_check: false
+  filesystem:
+    filename: /config/notification.txt

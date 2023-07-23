@@ -1,0 +1,8 @@
+/infra/blocky/*
+
+/infra/caddy/*
+!/infra/caddy/Dockerfile
+
+/infra/authelia/*
+
+/infra/nginx/*

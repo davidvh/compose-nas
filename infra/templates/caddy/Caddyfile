@@ -1,0 +1,74 @@
+(auth_proxy_list) {
+  trusted_proxies 172.1.0.0/16
+}
+
+(duckdns) {
+  tls {
+    dns duckdns ${DUCKDNS_TOKEN}
+  }
+}
+
+(authelia_proxy) {
+  forward_auth authelia:9091 {
+    uri /api/verify?rd=https://auth.${HOSTNAME}/
+    copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    import auth_proxy_list
+  }
+}
+
+(authelia_basic) {
+  forward_auth authelia:9091 {
+    uri /api/verify?auth=basic
+  }
+}
+
+{
+  # Use ZeroSSL for certs
+  # acme_ca https://acme.zerossl.com/v2/DV90
+  email ${ADMIN_EMAIL}
+}
+
+auth.$HOSTNAME {
+  import duckdns
+  reverse_proxy authelia:9091 {
+    ## This import needs to be included if you're relying on a trusted proxies configuration.
+    import auth_proxy_list
+  }
+}
+
+whoami.$HOSTNAME {
+  import duckdns
+  import authelia_proxy
+  reverse_proxy whoami:80 {
+    import auth_proxy_list
+  }
+}
+
+paperless.$HOSTNAME {
+  import duckdns
+  import authelia_proxy
+  reverse_proxy paperless:8000 {
+    import auth_proxy_list
+  }
+}
+
+jellyfin.$HOSTNAME {
+  import duckdns
+  reverse_proxy jellyfin:8096 {
+    import auth_proxy_list
+  }
+}
+
+webdav.$HOSTNAME {
+  import duckdns
+  import authelia_basic
+  reverse_proxy webdav:80
+}
+
+wikijs.$HOSTNAME {
+  import duckdns
+  reverse_proxy wikijs:3000 {
+    import auth_proxy_list
+  }
+}
+

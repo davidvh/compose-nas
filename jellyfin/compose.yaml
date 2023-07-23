@@ -1,0 +1,35 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - JELLYFIN_PublishedServerUrl=jellyfin.${HOSTNAME}
+    volumes:
+      - config:/config
+      - /mnt/media/movies:/data/movies
+      - /mnt/media/shows:/data/shows
+      - /mnt/media/music:/data/music
+      - /mnt/media/books:/data/books
+      - /mnt/media/photos:/data/photos
+    ports:
+      - "7359:7359/udp"
+      - "1900:1900/udp"
+    networks:
+      - default
+      - auth
+    devices:
+      - /dev/dri:/dev/dri
+    restart: always
+
+networks:
+  default:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true
+
+volumes:
+  config:

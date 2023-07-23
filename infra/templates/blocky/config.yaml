@@ -1,0 +1,21 @@
+upstream:
+  default:
+    - 1.1.1.1
+    - 8.8.8.8
+customDNS:
+  mapping:
+    ${HOSTNAME}: ${HOSTIP}
+    pve1.${SUBDOMAIN}: ${IPNETWORK}.5
+    mimir1.${SUBDOMAIN}: ${IPNETWORK}.2
+    router.${SUBDOMAIN}: ${IPNETWORK}.1
+conditional:
+  mapping:
+    ${SUBDOMAIN}: ${DNS}
+blocking:
+  blackLists:
+    ads:
+      - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+  clientGroupsBlock:
+    default:
+      - ads
+port: 53

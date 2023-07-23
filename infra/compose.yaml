@@ -1,0 +1,104 @@
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - SUBDOMAINS=${SUBDOMAIN}
+      - TOKEN=${DUCKDNS_TOKEN}
+    restart: unless-stopped
+
+  caddy:
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
+    container_name: caddy
+    volumes:
+      - caddy-data:/data
+      - certs:/data/caddy/certificates
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+
+  blocky:
+    image: spx01/blocky
+    container_name: blocky
+    volumes:
+      - ./blocky/config.yaml:/app/config.yml
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 4000:4000/tcp # Metrics
+    restart: unless-stopped
+
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    volumes:
+      - ./authelia/configurations.yml:/config/configurations.yml
+      - certs:/config/certificates
+      - auth_db:/db
+    networks:
+      - default
+      - auth
+    depends_on:
+      - lldap
+    restart: unless-stopped
+
+  lldap:
+    image: nitnelave/lldap:stable
+    container_name: lldap
+    ports:
+      # For LDAP
+      - "389:3890"
+      # For LDAPS (LDAP Over SSL), enable port if LLDAP_LDAPS_OPTIONS__ENABLED set true, look env below
+      #- "636:6360"
+      # For the web front-end
+      - "17170:17170"
+    networks:
+      - auth
+    volumes:
+      - "lldap_data:/data"
+      - certs:/certs
+    environment:
+      - LLDAP_JWT_SECRET=${LLDAP_JWT_SECRET}
+      - LLDAP_LDAP_USER_PASS=${LLDAP_USERPASS}
+      - LLDAP_LDAP_BASE_DN=dc=${SUBDOMAIN},dc=com
+    restart: unless-stopped
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "whoami"
+
+  webdav:
+    image: lscr.io/linuxserver/nginx:latest
+    container_name: webdav
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+       - ./nginx/default:/config/nginx/site-confs/default.conf
+       - /mnt/media/books:/share/books
+       - /mnt/media/movies:/share/movies
+       - /mnt/media/music:/share/music
+       - /mnt/media/photos:/share/photos
+       - /mnt/media/shows:/share/shows
+       - /mnt/media/shared:/share/shared
+    restart: unless-stopped
+
+networks:
+  default:
+    name: compose-nas
+    ipam:
+      config:
+        - subnet: 172.1.0.0/16
+  auth:
+    name: auth
+
+volumes:
+  caddy-data:
+  certs:
+  auth_db:
+  lldap_data:
