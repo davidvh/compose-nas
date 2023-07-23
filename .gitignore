@@ -7,4 +7,6 @@
 
 /infra/nginx/*
 
+/infra/dashy/*
+
 /homeassistant/hass/*
