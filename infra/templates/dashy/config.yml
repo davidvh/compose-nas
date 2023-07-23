@@ -1,0 +1,31 @@
+pageInfo:
+  title: Home Lab
+sections:
+- name: Media
+  icon: mdi-multimedia
+  items:
+  - title: Jellyfin
+    description: Jellyfin media server
+    icon: si-jellyfin
+    url: https://jellyfin.${HOSTNAME}
+- name: Organization
+  icon: mdi-domain
+  items:
+  - title: Paperless-NGX
+    icon: mdi-scanner
+    url: https://paperless.${HOSTNAME}
+  - title: Wiki
+    icon: si-wikidotjs
+    url: https://wikijs.${HOSTNAME}
+  - title: Syncthing
+    icon: mdi-sync
+    url: http://syncthing.${HOSTNAME}:8384
+- name: HomeLab
+  icon: mdi-home-account
+  items:
+   - title: LLDAP
+     icon: mdi-account-group
+     url: http://lldap.${HOSTNAME}:17170
+   - title: WhoAmI
+     icon: mdi-account-check
+     url: https://whoami.${HOSTNAME}

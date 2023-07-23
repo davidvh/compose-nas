@@ -28,6 +28,12 @@
   email ${ADMIN_EMAIL}
 }
 
+dashy.$HOSTNAME {
+  import duckdns
+  import authelia_proxy
+  reverse_proxy dashy:80
+}
+
 auth.$HOSTNAME {
   import duckdns
   reverse_proxy authelia:9091 {

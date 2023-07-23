@@ -1,7 +1,9 @@
 mkdir -p ./blocky
 mkdir -p ./nginx
+mkdir -p ./dashy
 envsubst < ./templates/blocky/config.yaml > ./blocky/config.yaml
 envsubst < ./templates/nginx/default > ./nginx/default
+envsubst < ./templates/dashy/config.yml > ./dashy/config.yml
 envsubst < ./templates/caddy/Caddyfile > ./caddy/Caddyfile
 
 caddy_container_id=$(docker ps | grep caddy | awk '{print $1;}')
@@ -10,5 +12,5 @@ then
   docker exec -w /etc/caddy $caddy_container_id caddy reload
 fi
 
-mkdir ./authelia
+mkdir -p ./authelia
 envsubst < ./templates/authelia/configuration.yml > ./authelia/configuration.yml
