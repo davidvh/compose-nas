@@ -8,6 +8,11 @@ services:
       - config:/config
       - metadata:/metadata
 
+networks:
+  default:
+    name: compose-nas
+    external: true
+
 volumes:
   config:
   metadata:
