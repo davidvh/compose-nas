@@ -1,0 +1,68 @@
+x-deploy: &default-deploy
+  restart_policy:
+    condition: on-failure
+    delay: 5s
+    window: 120s
+  update_config:
+    order: start-first
+
+version: '3.7'
+
+services:
+  firezone:
+    image: firezone/firezone:latest
+    container_name: firezone
+    ports:
+      - 51820:51820/udp
+    env_file:
+      - /mnt/media/firezone/app.env
+    environment:
+      # See https://www.firezone.dev/docs/reference/env-vars for more info.
+      DATABASE_HOST: postgres
+      DATABASE_NAME: firezone
+      DATABASE_USER: postgres
+    networks:
+      - default
+      - nas
+    volumes:
+      # IMPORTANT: Persists WireGuard private key and other data. If
+      # /var/firezone/private_key exists when Firezone starts, it is
+      # used as the WireGuard private. Otherwise, one is generated.
+      - firezone:/var/firezone
+    cap_add:
+      # Needed for WireGuard and firewall support.
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      # Needed for masquerading and NAT.
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
+    depends_on:
+      - postgres
+    deploy:
+      <<: *default-deploy
+
+  postgres:
+    image: postgres:15
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - /mnt/media/firezone/db.env
+    environment:
+      POSTGRES_DB: firezone
+      POSTGRES_USER: postgres
+    deploy:
+      <<: *default-deploy
+      update_config:
+        order: stop-first
+
+networks:
+  default:
+  nas:
+    name: compose-nas
+    external: true
+
+volumes:
+  firezone:
+  postgres-data:

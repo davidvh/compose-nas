@@ -42,6 +42,11 @@ auth.$HOSTNAME {
   }
 }
 
+firezone.$HOSTNAME {
+  import duckdns
+  reverse_proxy firezone:13000
+}
+
 whoami.$HOSTNAME {
   import duckdns
   import authelia_proxy

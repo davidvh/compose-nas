@@ -1,0 +1,11 @@
+mkdir -p /mnt/media/firezone
+if [ ! -f /mnt/media/firezone/db.env ]; then
+  docker run --rm firezone/firezone bin/gen-env > /mnt/media/firezone/app.env.tmp
+  sed -i 's/EXTERNAL_URL=_CHANGE_ME_/EXTERNAL_URL=https:\/\/firezone.${HOSTNAME}/g' /mnt/media/firezone/app.env.tmp
+  sed -i 's/DEFAULT_ADMIN_EMAIL=_CHANGE_ME_/DEFAULT_ADMIN_EMAIL=${ADMIN_EMAIL}/g' /mnt/media/firezone/app.env.tmp
+  envsubst < /mnt/media/firezone/app.env.tmp > /mnt/media/firezone/app.env
+  rm /mnt/media/firezone/app.env.tmp
+
+  cat /mnt/media/firezone/app.env | grep 'DATABASE_PASSWORD=' > /mnt/media/firezone/db.env
+  sed -i 's/DATABASE_PASSWORD=/POSTGRES_PASSWORD=/g' /mnt/media/firezone/db.env
+fi
