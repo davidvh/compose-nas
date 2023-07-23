@@ -36,7 +36,7 @@ services:
     image: authelia/authelia:latest
     container_name: authelia
     volumes:
-      - ./authelia/configurations.yml:/config/configurations.yml
+      - ./authelia/configuration.yml:/config/configuration.yml
       - certs:/config/certificates
       - auth_db:/db
     networks:
