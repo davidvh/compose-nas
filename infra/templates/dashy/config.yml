@@ -12,6 +12,9 @@ sections:
         description: Jellyfin media server
         icon: si-jellyfin
         url: https://jellyfin.${HOSTNAME}
+      - title: Kavita
+        description: Comics and ebooks reader
+        icon: mdi-view-grid-outline
   - name: Organization
     icon: mdi-domain
     items:
