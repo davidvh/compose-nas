@@ -11,6 +11,9 @@ sections:
 - name: Organization
   icon: mdi-domain
   items:
+  - title: HomeAssistant
+    icon: si-homeassistant
+    url: https://hass.${HOSTNAME}
   - title: Paperless-NGX
     icon: mdi-scanner
     url: https://paperless.${HOSTNAME}

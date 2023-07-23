@@ -55,6 +55,11 @@ whoami.$HOSTNAME {
   }
 }
 
+hass.$HOSTNAME {
+  import duckdns
+  reverse_proxy ${IPNETWORK}.3:8123
+}
+
 paperless.$HOSTNAME {
   import duckdns
   import authelia_proxy

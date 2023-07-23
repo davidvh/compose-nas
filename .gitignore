@@ -6,3 +6,5 @@
 /infra/authelia/*
 
 /infra/nginx/*
+
+/homeassistant/hass/*

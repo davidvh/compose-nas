@@ -1,0 +1,2 @@
+mkdir -p ./hass
+envsubst < ./templates/hass/configuration.yaml > ./hass/configuration.yaml
