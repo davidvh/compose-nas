@@ -80,9 +80,11 @@ services:
       - TZ=Etc/UTC
     volumes:
        - ./nginx/default:/config/nginx/site-confs/default.conf
+       - /mnt/media/audiobooks:/share/audiobooks
        - /mnt/media/books:/share/books
        - /mnt/media/movies:/share/movies
        - /mnt/media/music:/share/music
+       - /mnt/media/podcasts:/share/podcasts
        - /mnt/media/photos:/share/photos
        - /mnt/media/shows:/share/shows
        - /mnt/media/shared:/share/shared

@@ -68,6 +68,11 @@ paperless.$HOSTNAME {
   }
 }
 
+audiobookshelf.$HOSTNAME {
+  import duckdns
+  reverse_proxy audiobookshelf:80
+}
+
 jellyfin.$HOSTNAME {
   import duckdns
   reverse_proxy jellyfin:8096 {

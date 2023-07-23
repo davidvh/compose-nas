@@ -4,6 +4,10 @@ sections:
 - name: Media
   icon: mdi-multimedia
   items:
+  - title: AudioBookshelf
+    description: Audiobooks and Podcasts
+    icon: mdi-book-play
+    url: https://audiobookshelf.${HOSTNAME}
   - title: Jellyfin
     description: Jellyfin media server
     icon: si-jellyfin
