@@ -82,8 +82,8 @@ jellyfin.$HOSTNAME {
 
 webdav.$HOSTNAME {
   import duckdns
-  import authelia_proxy
-  reverse_proxy gossa:8001
+  import authelia_basic
+  reverse_proxy webdav:80
 }
 
 wikijs.$HOSTNAME {

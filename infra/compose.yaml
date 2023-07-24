@@ -71,18 +71,23 @@ services:
     image: "traefik/whoami"
     container_name: "whoami"
 
-  gossa-server:
-    image: pldubouilh/gossa
-    container_name: gossa
+  webdav:
+    image: lscr.io/linuxserver/nginx:latest
+    container_name: webdav
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
     volumes:
-       - /mnt/media/audiobooks:/shared/audiobooks
-       - /mnt/media/books:/shared/books
-       - /mnt/media/movies:/shared/movies
-       - /mnt/media/music:/shared/music
-       - /mnt/media/podcasts:/shared/podcasts
-       - /mnt/media/photos:/shared/photos
-       - /mnt/media/shows:/shared/shows
-       - /mnt/media/shared:/shared/shared
+       - ./nginx/default:/config/nginx/site-confs/default.conf
+       - /mnt/media/audiobooks:/share/audiobooks
+       - /mnt/media/books:/share/books
+       - /mnt/media/movies:/share/movies
+       - /mnt/media/music:/share/music
+       - /mnt/media/podcasts:/share/podcasts
+       - /mnt/media/photos:/share/photos
+       - /mnt/media/shows:/share/shows
+       - /mnt/media/shared:/share/shared
     restart: unless-stopped
 
   dashy:
