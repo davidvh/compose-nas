@@ -80,10 +80,10 @@ jellyfin.$HOSTNAME {
   }
 }
 
-webdav.$HOSTNAME {
+files.$HOSTNAME {
   import duckdns
-  import authelia_basic
-  reverse_proxy webdav:80
+  import authelia_proxy
+  reverse_proxy filebrowser:80
 }
 
 wikijs.$HOSTNAME {

@@ -1,0 +1,24 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    container_name: filebrowser
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./config:/config/settings.json
+      - /mnt/media/audiobooks:/srv/audiobooks
+      - /mnt/media/books:/srv/books
+      - /mnt/media/movies:/srv/movies
+      - /mnt/media/music:/srv/music
+      - /mnt/media/podcasts:/srv/podcasts
+      - /mnt/media/photos:/srv/photos
+      - /mnt/media/shows:/srv/shows
+      - /mnt/media/shared:/srv/shared
+    restart: unless-stopped
+
+networks:
+  default:
+    name: compose-nas
+    external: true

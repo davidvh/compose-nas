@@ -71,25 +71,6 @@ services:
     image: "traefik/whoami"
     container_name: "whoami"
 
-  webdav:
-    image: lscr.io/linuxserver/nginx:latest
-    container_name: webdav
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-       - ./nginx/default:/config/nginx/site-confs/default.conf
-       - /mnt/media/audiobooks:/share/audiobooks
-       - /mnt/media/books:/share/books
-       - /mnt/media/movies:/share/movies
-       - /mnt/media/music:/share/music
-       - /mnt/media/podcasts:/share/podcasts
-       - /mnt/media/photos:/share/photos
-       - /mnt/media/shows:/share/shows
-       - /mnt/media/shared:/share/shared
-    restart: unless-stopped
-
   dashy:
     image: lissy93/dashy
     container_name: dashy
