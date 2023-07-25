@@ -1,0 +1,32 @@
+services:
+  sftpgo:
+    image: drakkan/sftpgo:v2-plugins
+    restart: unless-stopped
+    networks:
+      - nas
+      - auth
+    ports:
+      - 2022:2022 # SFTP
+      #- 8443:443" # HTTPS
+      #- 5007:5007 # WEBDAV
+    environment:
+      SFTPGO_GRACE_TIME: 32
+      SFTPGO_COMMON_DEFENDER__ENABLED: true
+      SFTPGO_COMMON_DEFENDER__BAN_TIME: 15
+      SFTPGO_COMMON_DEFENDER__BAN_TIME_INCREMENT: 100
+      SFTPGO_COMMON_DEFENDER__THRESHOLD: 5
+      SFTPGO_COMMON_DEFENDER__OBSERVATION_TIME: 15
+    volumes:
+      - config:/var/lib/sftpgo
+    #  - /mnt/media:/srv/sftpgo
+
+networks:
+  nas:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true
+
+volumes:
+  config:

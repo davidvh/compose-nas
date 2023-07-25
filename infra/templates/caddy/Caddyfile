@@ -86,6 +86,11 @@ files.$HOSTNAME {
   reverse_proxy filebrowser:80
 }
 
+sftpgo.$HOSTNAME {
+  import duckdns
+  reverse_proxy sftpgo:8080
+}
+
 wikijs.$HOSTNAME {
   import duckdns
   reverse_proxy wikijs:3000 {
