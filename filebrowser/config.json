@@ -1,11 +1,9 @@
 {
-    "auth": {
-        "method": "noauth"
+    "settings": {
+        "authMethod": "noauth",
     },
-    "port": 80,
-    "baseURL": "",
-    "address": "",
-    "log": "stdout",
-    "database": "/database/filebrowser.db",
-    "root": "/srv"
+    "server": {
+        "port": "80",
+        "log": "stdout"
+    }
 }

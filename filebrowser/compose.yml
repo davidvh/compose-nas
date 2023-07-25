@@ -7,7 +7,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - ./config:/config/settings.json
+      - ./config.json:/config/settings.json
       - /mnt/media/audiobooks:/srv/audiobooks
       - /mnt/media/books:/srv/books
       - /mnt/media/movies:/srv/movies
