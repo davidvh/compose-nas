@@ -1,6 +1,6 @@
 {
     "settings": {
-        "authMethod": "noauth",
+        "authMethod": "noauth"
     },
     "server": {
         "port": "80",
