@@ -41,7 +41,7 @@ syncthing.$HOSTNAME {
 files.$HOSTNAME {
   import duckdns
   import authelia_proxy
-  reverse_proxy filebrowser:8001
+  reverse_proxy filebrowser:80
 }
 
 lldap.$HOSTNAME {
