@@ -1,0 +1,50 @@
+(auth_proxy_list) {
+  trusted_proxies 172.1.0.0/16
+}
+
+(duckdns) {
+  tls {
+    dns duckdns ${DUCKDNS_TOKEN}
+  }
+}
+
+(authelia_proxy) {
+  forward_auth authelia:9091 {
+    uri /api/verify?rd=https://auth.${HOSTNAME}/
+    copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    import auth_proxy_list
+  }
+}
+
+(authelia_basic) {
+  forward_auth authelia:9091 {
+    uri /api/verify?auth=basic
+  }
+}
+
+{
+  # Use ZeroSSL for certs
+  # acme_ca https://acme.zerossl.com/v2/DV90
+  email ${ADMIN_EMAIL}
+}
+
+firezone.$HOSTNAME {
+  import duckdns
+  reverse_proxy firezone:13000
+}
+
+syncthing.$HOSTNAME {
+  import duckdns
+  reverse_proxy syncthing:8384
+}
+
+files.$HOSTNAME {
+  import duckdns
+  import authelia_proxy
+  reverse_proxy filebrowser:8001
+}
+
+lldap.$HOSTNAME {
+    import duckdns
+    reverse_proxy lldap:17170
+}

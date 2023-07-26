@@ -7,11 +7,11 @@ services:
       - TOKEN=${DUCKDNS_TOKEN}
     restart: unless-stopped
 
-  caddy:
+  caddy-public:
     build:
       context: ./caddy
       dockerfile: Dockerfile
-    container_name: caddy
+    container_name: caddy-public
     volumes:
       - caddy-data:/data
       - certs:/data/caddy/certificates
@@ -19,6 +19,20 @@ services:
     ports:
       - 443:443
       - 80:80
+    restart: unless-stopped
+
+  caddy-internal:
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
+    container_name: caddy-internal
+    volumes:
+      - caddy-internal-data:/data
+      - certs:/data/caddy/certificates
+      - ./caddy/InternalCaddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 8443:443
+      - 8080:80
     restart: unless-stopped
 
   blocky:
@@ -98,6 +112,7 @@ networks:
 
 volumes:
   caddy-data:
+  caddy-internal-data:
   certs:
   auth_db:
   lldap_data:

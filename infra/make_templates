@@ -5,8 +5,15 @@ envsubst < ./templates/blocky/config.yaml > ./blocky/config.yaml
 envsubst < ./templates/nginx/default > ./nginx/default
 envsubst < ./templates/dashy/config.yml > ./dashy/config.yml
 envsubst < ./templates/caddy/Caddyfile > ./caddy/Caddyfile
+envsubst < ./templates/caddy/InternalCaddyfile > ./caddy/InternalCaddyfile
 
-caddy_container_id=$(docker ps | grep caddy | awk '{print $1;}')
+caddy_container_id=$(docker ps | grep caddy-public | awk '{print $1;}')
+if $caddy_container
+then
+  docker exec -w /etc/caddy $caddy_container_id caddy reload
+fi
+
+caddy_container_id=$(docker ps | grep caddy-internal | awk '{print $1;}')
 if $caddy_container
 then
   docker exec -w /etc/caddy $caddy_container_id caddy reload
