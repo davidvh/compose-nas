@@ -1,10 +1,9 @@
 services:
   filebrowser:
-    image: filebrowser/filebrowser:s6
-    container_name: filebrowser
-    environment:
-      PUID: 1000
-      PGID: 1000
+    image: sigoden/dufs
+    container_name: dufs
+    command: /srv -A
+    user: "1000:1000"
     volumes:
       - /mnt/media/audiobooks:/srv/audiobooks
       - /mnt/media/books:/srv/books
