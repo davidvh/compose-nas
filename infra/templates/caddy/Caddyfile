@@ -42,11 +42,6 @@ auth.$HOSTNAME {
   }
 }
 
-firezone.$HOSTNAME {
-  import duckdns
-  reverse_proxy firezone:13000
-}
-
 whoami.$HOSTNAME {
   import duckdns
   import authelia_proxy
@@ -68,17 +63,16 @@ paperless.$HOSTNAME {
   }
 }
 
+audiobookshelf.$HOSTNAME {
+  import duckdns
+  reverse_proxy audiobookshelf:80
+}
+
 jellyfin.$HOSTNAME {
   import duckdns
   reverse_proxy jellyfin:8096 {
     import auth_proxy_list
   }
-}
-
-webdav.$HOSTNAME {
-  import duckdns
-  import authelia_basic
-  reverse_proxy webdav:80
 }
 
 wikijs.$HOSTNAME {
@@ -87,4 +81,3 @@ wikijs.$HOSTNAME {
     import auth_proxy_list
   }
 }
-

@@ -1,0 +1,9 @@
+{
+    "settings": {
+        "authMethod": "noauth"
+    },
+    "server": {
+        "port": "80",
+        "log": "stdout"
+    }
+}

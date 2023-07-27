@@ -1,34 +1,47 @@
 pageInfo:
   title: Home Lab
 sections:
-- name: Media
-  icon: mdi-multimedia
-  items:
-  - title: Jellyfin
-    description: Jellyfin media server
-    icon: si-jellyfin
-    url: https://jellyfin.${HOSTNAME}
-- name: Organization
-  icon: mdi-domain
-  items:
-  - title: HomeAssistant
-    icon: si-homeassistant
-    url: https://hass.${HOSTNAME}
-  - title: Paperless-NGX
-    icon: mdi-scanner
-    url: https://paperless.${HOSTNAME}
-  - title: Wiki
-    icon: si-wikidotjs
-    url: https://wikijs.${HOSTNAME}
-  - title: Syncthing
-    icon: mdi-sync
-    url: http://syncthing.${HOSTNAME}:8384
-- name: HomeLab
-  icon: mdi-home-account
-  items:
-   - title: LLDAP
-     icon: mdi-account-group
-     url: http://lldap.${HOSTNAME}:17170
-   - title: WhoAmI
-     icon: mdi-account-check
-     url: https://whoami.${HOSTNAME}
+  - name: Media
+    icon: mdi-multimedia
+    items:
+      - title: AudioBookshelf
+        description: Audiobooks and Podcasts
+        icon: mdi-book-play
+        url: https://audiobookshelf.${HOSTNAME}
+      - title: Jellyfin
+        description: Jellyfin media server
+        icon: si-jellyfin
+        url: https://jellyfin.${HOSTNAME}
+  - name: Organization
+    icon: mdi-domain
+    items:
+      - title: HomeAssistant
+        icon: si-homeassistant
+        url: https://hass.${HOSTNAME}
+      - title: Paperless-NGX
+        icon: mdi-scanner
+        url: https://paperless.${HOSTNAME}
+      - title: Wiki
+        icon: si-wikidotjs
+        url: https://wikijs.${HOSTNAME}
+  - name: HomeLab
+    icon: mdi-home-account
+    items:
+      - title: WhoAmI
+        icon: mdi-account-check
+        url: https://whoami.${HOSTNAME}
+  - name: Internal
+    icon: mdi-lock
+    items:
+      - title: LLDAP
+        icon: mdi-account-group
+        url: https://lldap.${HOSTNAME}:8443
+      - title: Files
+        icon: mdi-folder
+        url: https://files.${HOSTNAME}:8443
+      - title: Syncthing
+        icon: mdi-sync
+        url: https://syncthing.${HOSTNAME}:8443
+      - title: Firezone
+        icon: si-wireguard
+        url: https://firezone.${HOSTNAME}:8443
