@@ -1,0 +1,22 @@
+services:
+  kavita:
+    image: kizaing/kavita:latest
+    container_name: kavita
+    networks:
+      - nas
+      - auth
+    volumes:
+      - /mnt/media/books:/books
+      - config:/kavita/config
+    restart: unless-stopped
+
+networks:
+  nas:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true
+
+volumes:
+  config:

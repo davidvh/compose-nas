@@ -75,6 +75,11 @@ jellyfin.$HOSTNAME {
   }
 }
 
+kavita.$HOSTNAME {
+  import duckdns
+  reverse_proxy kavita:5000
+}
+
 wikijs.$HOSTNAME {
   import duckdns
   reverse_proxy wikijs:3000 {
