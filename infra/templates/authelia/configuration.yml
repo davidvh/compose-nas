@@ -84,3 +84,21 @@ notifier:
   disable_startup_check: false
   filesystem:
     filename: /config/notification.txt
+
+identity_providers:
+  oidc:
+    ## The other portions of the mandatory OpenID Connect 1.0 configuration go here.
+    ## See: https://www.authelia.com/c/oidc
+    clients:
+    - id: bookstack
+      description: BookStack
+      secret: '${BOOKSTACK_OIDC_DIGEST}'
+      public: false
+      authorization_policy: one_factor
+      redirect_uris:
+        - https://bookstack.${HOSTNAME}/oidc/callback
+      scopes:
+        - openid
+        - profile
+        - email
+      userinfo_signing_algorithm: none
