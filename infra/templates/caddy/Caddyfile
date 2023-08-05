@@ -68,6 +68,11 @@ audiobookshelf.$HOSTNAME {
   reverse_proxy audiobookshelf:80
 }
 
+bookstack.$HOSTNAME {
+  import duckdns
+  reverse_proxy bookstack:80
+}
+
 jellyfin.$HOSTNAME {
   import duckdns
   reverse_proxy jellyfin:8096 {

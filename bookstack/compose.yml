@@ -1,0 +1,56 @@
+services:
+  bookstack:
+    image: lscr.io/linuxserver/bookstack
+    container_name: bookstack
+    networks:
+      - default
+      - nas
+      - auth
+    environment:
+      - APP_URL=https://bookstack.${HOSTNAME}
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_USER=bookstack
+      - DB_PASS=${BOOKSTACK_DB_PASS}
+      - DB_DATABASE=bookstackapp
+      - AUTH_METHOD=ldap
+      - LDAP_SERVER=ldap://lldap:3890
+      - LDAP_BASE_DN=ou=people,dc=${SUBDOMAIN},dc=com
+      - LDAP_DN=uid=admin,ou=people,dc=${SUBDOMAIN},dc=com
+      - LDAP_PASS=${LLDAP_USERPASS}
+      - LDAP_USER_FILTER=(&(uid=$${user}))
+      - LDAP_VERSION=3
+      - LDAP_ID_ATTRIBUTE=uid
+      - LDAP_EMAIL_ATTRIBUTE=mail
+      - LDAP_DISPLAY_NAME_ATTRIBUTE=cn
+      - LDAP_START_TLS=false
+
+    volumes:
+      - app:/config
+    restart: unless-stopped
+    depends_on:
+      - bookstack_db
+  bookstack_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: bookstack_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${BOOKSTACK_DB_ADMINPASS}
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${BOOKSTACK_DB_PASS}
+    volumes:
+      - db:/config
+    restart: unless-stopped
+
+networks:
+  default:
+  nas:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true
+
+volumes:
+  db:
+  app:
