@@ -84,25 +84,27 @@ services:
     image: stalwartlabs/mail-server:latest
     container_name: mail
     ports:
-      - 25:25
-      - 587:587
-      - 465:465
-      - 143:143
-      - 993:993
-      - 4190:4190
+      - 25:25 # SMTP
+      - 587:587 #SMTPS
+      - 465:465 #SMTPS OLD
+      - 143:143 #IMAP
+      - 993:993 #IMAPS
+      - 4190:4190 #SIEVE
     networks:
       - auth
     volumes:
       - mail:/opt/stalwart-mail
+      - ./stalwart/config.toml:/etc/config.toml
   mail-cert-copy:
     image: alpine
-    command: /copy_certs.sh
+    command: /bin/sh /copy_certs.sh
     environment:
       - URI=mail.${HOSTNAME}
     volumes:
       - mail:/mail
       - certs:/certs
       - ./caddy_to_letsencrypt.sh:/copy_certs.sh
+    restart: unless-stopped
 
   whoami:
     image: "traefik/whoami"
@@ -139,3 +141,4 @@ volumes:
   certs:
   auth_db:
   lldap_data:
+  mail:

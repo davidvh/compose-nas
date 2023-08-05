@@ -48,3 +48,8 @@ lldap.$HOSTNAME {
     import duckdns
     reverse_proxy lldap:17170
 }
+
+mail.$HOSTNAME {
+  imoort duckdns
+  reverse_proxy mail:8080
+}

@@ -9,4 +9,6 @@
 
 /infra/dashy/*
 
+/infra/stalwart/*
+
 /homeassistant/hass/*
