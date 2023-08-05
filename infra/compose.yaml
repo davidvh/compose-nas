@@ -80,6 +80,30 @@ services:
       - LLDAP_LDAP_BASE_DN=dc=${SUBDOMAIN},dc=com
     restart: unless-stopped
 
+  mail:
+    image: stalwartlabs/mail-server:latest
+    container_name: mail
+    ports:
+      - 25:25
+      - 587:587
+      - 465:465
+      - 143:143
+      - 993:993
+      - 4190:4190
+    networks:
+      - auth
+    volumes:
+      - mail:/opt/stalwart-mail
+  mail-cert-copy:
+    image: alpine
+    command: /copy_certs.sh
+    environment:
+      - URI=mail.${HOSTNAME}
+    volumes:
+      - mail:/mail
+      - certs:/certs
+      - ./caddy_to_letsencrypt.sh:/copy_certs.sh
+
   whoami:
     image: "traefik/whoami"
     container_name: "whoami"
