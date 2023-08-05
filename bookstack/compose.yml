@@ -5,6 +5,7 @@ services:
     networks:
       - default
       - nas
+      - auth
     environment:
       - APP_URL=https://bookstack.${HOSTNAME}
       - DB_HOST=bookstack_db
