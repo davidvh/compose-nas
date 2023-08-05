@@ -27,6 +27,9 @@ sections:
       - title: Wiki
         icon: si-wikidotjs
         url: https://wikijs.${HOSTNAME}
+      - title: Bookstack
+        icon: si-bookstack
+        url: https://bookstack.${HOSTNAME}
   - name: HomeLab
     icon: mdi-home-account
     items:
