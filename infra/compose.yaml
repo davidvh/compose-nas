@@ -98,8 +98,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - SSL_TYPE=manual
-      - SSL_CERT_PATH=/etc/certs/mail.${HOSTNAME}/fullchain.pem
-      - SSL_KEY_PATH=/etc/certs/mail.${HOSTNAME}/privkey.pem
+      - SSL_CERT_PATH=/etc/certs/fullchain.pem
+      - SSL_KEY_PATH=/etc/certs/privkey.pem
       - ACCOUNT_PROVISIONER=LDAP
       - LDAP_SERVER_HOST=ldap://lldap:3890
       - LDAP_SEARCH_BASE=ou=people,dc=${SUBDOMAIN},dc=com
