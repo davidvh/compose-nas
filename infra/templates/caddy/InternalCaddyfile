@@ -50,10 +50,7 @@ lldap.$HOSTNAME {
 }
 
 mail.$HOSTNAME {
-  tls {
-    dns duckdns ${DUCKDNS_TOKEN}
-    key_type rsa4096
-  }
+  import duckdns
   import authelia_proxy
   respond 200
 }
