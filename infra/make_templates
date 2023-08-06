@@ -10,13 +10,13 @@ envsubst < ./templates/caddy/InternalCaddyfile > ./caddy/InternalCaddyfile
 caddy_container_id=$(docker ps | grep caddy-public | awk '{print $1;}')
 if $caddy_container
 then
-  docker exec -w /etc/caddy $caddy_container_id caddy reload
+  docker exec -w /etc/caddy $caddy_container_id caddy-public reload
 fi
 
 caddy_container_id=$(docker ps | grep caddy-internal | awk '{print $1;}')
 if $caddy_container
 then
-  docker exec -w /etc/caddy $caddy_container_id caddy reload
+  docker exec -w /etc/caddy $caddy_container_id caddy-internal reload
 fi
 
 mkdir -p ./authelia
