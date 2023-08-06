@@ -50,7 +50,7 @@ lldap.$HOSTNAME {
 }
 
 mail.$HOSTNAME {
-  imoort duckdns
+  import duckdns
   import authelia_proxy
   respond 200
 }
