@@ -103,7 +103,7 @@ services:
       - ACCOUNT_PROVISIONER=LDAP
       - LDAP_SERVER_HOST=ldap://lldap:3890
       - LDAP_SEARCH_BASE=ou=people,dc=${SUBDOMAIN},dc=com
-      - LDAP_BIND_DN=cn=admin,dc=${SUBDOMAIN},dc=com
+      - LDAP_BIND_DN=uid=admin,ou=people,dc=${SUBDOMAIN},dc=com
       - LDAP_BIND_PW=${LLDAP_USERPASS}
       - LDAP_QUERY_FILTER_USER=(mail=%s)
       - LDAP_QUERY_FILTER_GROUP=(mailGroupMember=%s)
