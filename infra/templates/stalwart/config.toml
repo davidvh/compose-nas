@@ -637,8 +637,8 @@ max-size = 26214400 # 25 mb
 sign = ["rsa"]
 
 [signature."rsa"]
-#public-key = "file:///opt/stalwart-mail/etc/dkim/mail.${HOSTNAME}.cert"
-private-key = "file:///opt/stalwart-mail/etc/dkim/mail.${HOSTNAME}.key"
+#public-key = "file:///opt/stalwart-mail/etc/certs/mail.${HOSTNAME}/fullchain.pem"
+private-key = "file:///opt/stalwart-mail/etc/certs/mail.${HOSTNAME}/privkey.pem"
 domain = "mail.${HOSTNAME}"
 selector = "stalwart"
 headers = ["From", "To", "Date", "Subject", "Message-ID"]
