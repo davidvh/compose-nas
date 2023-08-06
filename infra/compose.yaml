@@ -86,7 +86,6 @@ services:
     # Provide the FQDN of your mail server here (Your DNS MX record should point to this value)
     hostname: mail.${HOSTNAME}
     ports:
-      - "25:25" # SMTP
       - "587:587" #SMTPS
       - "465:465" #SMTPS OLD
       - "993:993" #IMAPS
@@ -95,9 +94,12 @@ services:
       - mailstate:/var/mail-state/
       - maillogs:/var/log/mail/
       - maildms:/tmp/docker-mailserver/
-      - mailcerts:/etc/letsencrypt/live/
+      - mailcerts:/etc/certs/
       - /etc/localtime:/etc/localtime:ro
     environment:
+      - SSL_TYPE=manual
+      - SSL_CERT_PATH=/etc/certs/mail.${HOSTNAME}/fullchain.pem
+      - SSL_KEY_PATH=/etc/certs/mail.${HOSTNAME}/privkey.pem
       - ACCOUNT_PROVISIONER=LDAP
       - LDAP_SERVER_HOST=ldap://lldap:3890
       - LDAP_SEARCH_BASE=ou=people,dc=${SUBDOMAIN},dc=com
