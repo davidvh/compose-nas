@@ -51,5 +51,6 @@ lldap.$HOSTNAME {
 
 mail.$HOSTNAME {
   imoort duckdns
-  reverse_proxy mail:8080
+  import authelia_proxy
+  respond 200
 }

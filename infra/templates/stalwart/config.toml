@@ -127,7 +127,7 @@ entries = 500
 ttl = {positive = '1h', negative = '10m'}
 
 [directory."imap".lookup]
-domains = ["${HOSTNAME}"]
+domains = ["mail.${HOSTNAME}"]
 
 [directory."lmtp"]
 type = "lmtp"
@@ -154,7 +154,7 @@ entries = 500
 ttl = {positive = '1h', negative = '10m'}
 
 [directory."lmtp".lookup]
-domains = ["${HOSTNAME}"]
+domains = ["mail.${HOSTNAME}"]
 
 #############################################
 # JMAP server configuration
@@ -594,34 +594,34 @@ forward = true
 
 [report.dsn]
 from-name = "Mail Delivery Subsystem"
-from-address = "MAILER-DAEMON@${HOSTNAME}"
+from-address = "MAILER-DAEMON@mail.${HOSTNAME}"
 sign = ["rsa"]
 
 [report.dkim]
 from-name = "Report Subsystem"
-from-address = "noreply-dkim@${HOSTNAME}"
+from-address = "noreply-dkim@mail.${HOSTNAME}"
 subject = "DKIM Authentication Failure Report"
 sign = ["rsa"]
 send = "1/1d"
 
 [report.spf]
 from-name = "Report Subsystem"
-from-address = "noreply-spf@${HOSTNAME}"
+from-address = "noreply-spf@mail.${HOSTNAME}"
 subject = "SPF Authentication Failure Report"
 send = "1/1d"
 sign = ["rsa"]
 
 [report.dmarc]
 from-name = "Report Subsystem"
-from-address = "noreply-dmarc@${HOSTNAME}"
+from-address = "noreply-dmarc@mail.${HOSTNAME}"
 subject = "DMARC Authentication Failure Report"
 send = "1/1d"
 sign = ["rsa"]
 
 [report.dmarc.aggregate]
 from-name = "DMARC Report"
-from-address = "noreply-dmarc@${HOSTNAME}"
-org-name = "${HOSTNAME}"
+from-address = "noreply-dmarc@mail.${HOSTNAME}"
+org-name = "mail.${HOSTNAME}"
 #contact-info = ""
 send = "daily"
 max-size = 26214400 # 25mb
@@ -629,17 +629,17 @@ sign = ["rsa"]
 
 [report.tls.aggregate]
 from-name = "TLS Report"
-from-address = "noreply-tls@${HOSTNAME}"
-org-name = "${HOSTNAME}"
+from-address = "noreply-tls@mail.${HOSTNAME}"
+org-name = "mail.${HOSTNAME}"
 #contact-info = ""
 send = "daily"
 max-size = 26214400 # 25 mb
 sign = ["rsa"]
 
 [signature."rsa"]
-#public-key = "file:///opt/stalwart-mail/etc/dkim/${HOSTNAME}.cert"
-private-key = "file:///opt/stalwart-mail/etc/dkim/${HOSTNAME}.key"
-domain = "${HOSTNAME}"
+#public-key = "file:///opt/stalwart-mail/etc/dkim/mail.${HOSTNAME}.cert"
+private-key = "file:///opt/stalwart-mail/etc/dkim/mail.${HOSTNAME}.key"
+domain = "mail.${HOSTNAME}"
 selector = "stalwart"
 headers = ["From", "To", "Date", "Subject", "Message-ID"]
 algorithm = "rsa-sha256"
@@ -668,7 +668,7 @@ allow-invalid-certs = true
 
 [sieve]
 from-name = "Automated Message"
-from-addr = "no-reply@${HOSTNAME}"
+from-addr = "no-reply@mail.${HOSTNAME}"
 return-path = ""
 #hostname = "mail.${HOSTNAME}"
 sign = ["rsa"]

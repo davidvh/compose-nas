@@ -90,6 +90,7 @@ services:
       - 143:143 #IMAP
       - 993:993 #IMAPS
       - 4190:4190 #SIEVE
+      - 8080:8080 #JMAP
     networks:
       - auth
     volumes:
