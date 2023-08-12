@@ -11,6 +11,8 @@ services:
     networks:
       - default
       - nas
+    depends_on:
+      - mealie-api
 
   mealie-api:
     image: hkotel/mealie:api-v1.0.0beta-5
