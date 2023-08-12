@@ -24,7 +24,8 @@
 
 {
   # Use ZeroSSL for certs
-  # acme_ca https://acme.zerossl.com/v2/DV90
+  acme_ca https://acme.zerossl.com/v2/DV90
+  cert_issuer zerossl ${ZEROSSL_APPKEY}
   email ${ADMIN_EMAIL}
 }
 
