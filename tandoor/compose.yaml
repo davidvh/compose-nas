@@ -1,0 +1,57 @@
+services:
+  db_recipes:
+    restart: unless-stopped
+    image: postgres:15-alpine
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+
+  web_recipes:
+    restart: unless-stopped
+    image: vabene1111/recipes
+    env_file:
+      - ./.env
+    networks:
+      - default
+      - auth
+    volumes:
+      - staticfiles:/opt/recipes/staticfiles
+      # Do not make this a bind mount, see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
+      - nginx_config:/opt/recipes/nginx/conf.d
+      - mediafiles:/opt/recipes/mediafiles
+    depends_on:
+      - db_recipes
+
+  tandoor_frontend:
+    image: nginx:mainline-alpine
+    container_name: tandoor_frontend
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    networks:
+      - default
+      - nas
+      - auth
+    depends_on:
+      - web_recipes
+    volumes:
+      # Do not make this a bind mount, see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
+      - nginx_config:/etc/nginx/conf.d:ro
+      - staticfiles:/static:ro
+      - mediafiles:/media:ro
+
+volumes:
+  postgresql:
+  nginx_config:
+  staticfiles:
+  mediafiles:
+
+networks:
+  default:
+  nas:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true

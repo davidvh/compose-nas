@@ -1,8 +1,6 @@
 mkdir -p ./blocky
-mkdir -p ./nginx
 mkdir -p ./dashy
 envsubst < ./templates/blocky/config.yaml > ./blocky/config.yaml
-envsubst < ./templates/nginx/default > ./nginx/default
 envsubst < ./templates/dashy/config.yml > ./dashy/config.yml
 envsubst < ./templates/caddy/Caddyfile > ./caddy/Caddyfile
 envsubst < ./templates/caddy/InternalCaddyfile > ./caddy/InternalCaddyfile

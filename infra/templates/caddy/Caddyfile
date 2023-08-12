@@ -24,7 +24,8 @@
 
 {
   # Use ZeroSSL for certs
-  # acme_ca https://acme.zerossl.com/v2/DV90
+  acme_ca https://acme.zerossl.com/v2/DV90
+  cert_issuer zerossl ${ZEROSSL_APPKEY}
   email ${ADMIN_EMAIL}
 }
 
@@ -83,6 +84,13 @@ jellyfin.$HOSTNAME {
 kavita.$HOSTNAME {
   import duckdns
   reverse_proxy kavita:5000
+}
+
+tandoor.$HOSTNAME {
+  import duckdns
+  reverse_proxy tandoor_frontend {
+    import auth_proxy_list
+  }
 }
 
 wikijs.$HOSTNAME {
