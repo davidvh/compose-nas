@@ -1,0 +1,55 @@
+services:
+  mealie-frontend:
+    image: hkotel/mealie:frontend-v1.0.0beta-5
+    container_name: mealie-frontend
+    environment:
+    # Set Frontend ENV Variables Here
+      - API_URL=http://mealie-api:9000
+    restart: unless-stopped
+    volumes:
+      - mealie-data:/app/data/
+    networks:
+      - default
+      - nas
+
+  mealie-api:
+    image: hkotel/mealie:api-v1.0.0beta-5
+    container_name: mealie-api
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - mealie-data:/app/data/
+    networks:
+      - default
+      - auth
+    environment:
+    # Set Backend ENV Variables Here
+      - ALLOW_SIGNUP=false
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+      - BASE_URL=https://mealie.${HOSTNAME}
+      - LDAP_AUTH_ENABLED=true
+      - LDAP_SERVER_URL=ldap://lldap:3890
+      - LDAP_BASE_DN=ou=people,dc=${SUBDOMAIN},dc=com
+      # - LDAP_USER_FILTER=(memberof=cn=mealie,ou=groups,dc=${SUBDOMAIN},dc=com)
+      - LDAP_ADMIN_FILTER=(memberof=cn=lldap_admin,ou=groups,dc=${SUBDOMAIN},dc=com)
+      - LDAP_QUERY_BIND=cn=readonly,ou=people,dc=${SUBDOMAIN},dc=com
+      - LDAP_QUERY_PASSWORD=${LLDAP_READPASS}
+      - LDAP_ID_ATTRIBUTE=uid
+      - LDAP_NAME_ATTRIBUTE=displayName
+      - LDAP_MAIL_ATTRIBUTE=mail
+    restart: unless-stopped
+
+volumes:
+  mealie-data:
+
+networks:
+  default:
+  nas:
+    name: compose-nas
+    external: true
+  auth:
+    name: auth
+    external: true

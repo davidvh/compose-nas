@@ -86,6 +86,13 @@ kavita.$HOSTNAME {
   reverse_proxy kavita:5000
 }
 
+mealie.$HOSTNAME {
+  import duckdns
+  reverse_proxy mealie-frontend:3000 {
+    import auth_proxy_list
+  }
+}
+
 wikijs.$HOSTNAME {
   import duckdns
   reverse_proxy wikijs:3000 {
