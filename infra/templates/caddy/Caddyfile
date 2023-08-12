@@ -93,6 +93,13 @@ mealie.$HOSTNAME {
   }
 }
 
+tandoor.$HOSTNAME {
+  import duckdns
+  reverse_proxy tandoor_frontend {
+    import auth_proxy_list
+  }
+}
+
 wikijs.$HOSTNAME {
   import duckdns
   reverse_proxy wikijs:3000 {

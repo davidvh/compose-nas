@@ -30,6 +30,10 @@ sections:
       - title: Bookstack
         icon: si-bookstack
         url: https://bookstack.${HOSTNAME}
+      - title: Mealie
+        url: https://mealie.${HOSTNAME}
+      - title: Tandoor Recipies
+        url: https://tandoor.${HOSTNAME}
   - name: HomeLab
     icon: mdi-home-account
     items:
