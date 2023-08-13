@@ -23,7 +23,7 @@ sections:
       - title: ROMs
         description: ROM Management
         icon: mdi-content-save
-        url: https://roms.${HOSTNAME}
+        url: https://roms.${HOSTNAME}:8443
   - name: Organization
     icon: mdi-domain
     items:
