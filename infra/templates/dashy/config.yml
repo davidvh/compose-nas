@@ -15,6 +15,15 @@ sections:
       - title: Kavita
         description: Comics and ebooks reader
         icon: mdi-view-grid-outline
+        url: https://kavita.${HOSTNAME}
+      - title: EmulatorJS
+        description: Game emulation
+        icon: mdi-controller-classic
+        url: https://emulator.${HOSTNAME}
+      - title: ROMs
+        description: ROM Management
+        icon: mdi-content-save
+        url: https://roms.${HOSTNAME}
   - name: Organization
     icon: mdi-domain
     items:

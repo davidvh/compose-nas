@@ -1,0 +1,17 @@
+services:
+  emulatorjs:
+    image: lscr.io/linuxserver/emulatorjs:latest
+    container_name: emulatorjs
+    volumes:
+      - config:/config
+      - data:/data
+    restart: unless-stopped
+
+volumes:
+  data:
+  config:
+
+networks:
+  default:
+    name: compose-nas
+    external: true

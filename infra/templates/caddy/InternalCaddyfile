@@ -28,6 +28,11 @@
   email ${ADMIN_EMAIL}
 }
 
+roms.$HOSTNAME {
+  import duckdns
+  reverse_proxy emulatorjs:3000
+}
+
 firezone.$HOSTNAME {
   import duckdns
   reverse_proxy firezone:13000
