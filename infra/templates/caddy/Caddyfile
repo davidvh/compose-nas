@@ -76,6 +76,7 @@ bookstack.$HOSTNAME {
 
 emulator.$HOSTNAME {
   import duckdns
+  import authelia_proxy
   reverse_proxy emulatorjs:80
 }
 

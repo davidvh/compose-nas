@@ -30,6 +30,7 @@
 
 roms.$HOSTNAME {
   import duckdns
+  import authelia_proxy
   reverse_proxy emulatorjs:3000
 }
 
