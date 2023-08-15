@@ -74,6 +74,12 @@ bookstack.$HOSTNAME {
   reverse_proxy bookstack:80
 }
 
+emulator.$HOSTNAME {
+  import duckdns
+  import authelia_proxy
+  reverse_proxy emulatorjs:80
+}
+
 jellyfin.$HOSTNAME {
   import duckdns
   reverse_proxy jellyfin:8096 {
