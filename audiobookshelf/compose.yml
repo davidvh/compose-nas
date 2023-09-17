@@ -7,6 +7,7 @@ services:
       - /mnt/media/podcasts:/podcasts
       - config:/config
       - metadata:/metadata
+    restart: unless-stopped
 
 networks:
   default:

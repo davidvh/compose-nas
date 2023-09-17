@@ -24,12 +24,12 @@ services:
       - LDAP_EMAIL_ATTRIBUTE=mail
       - LDAP_DISPLAY_NAME_ATTRIBUTE=cn
       - LDAP_START_TLS=false
-
     volumes:
       - app:/config
     restart: unless-stopped
     depends_on:
       - bookstack_db
+
   bookstack_db:
     image: lscr.io/linuxserver/mariadb
     container_name: bookstack_db

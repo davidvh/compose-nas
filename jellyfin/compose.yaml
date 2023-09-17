@@ -21,7 +21,7 @@ services:
       - auth
     devices:
       - /dev/dri:/dev/dri
-    restart: always
+    restart: unless-stopped
 
 networks:
   default:
