@@ -97,6 +97,7 @@ tandoor.$HOSTNAME {
   reverse_proxy tandoor_frontend {
     import auth_proxy_list
   }
+}
 
 komga.$HOSTNAME {
   import duckdns
