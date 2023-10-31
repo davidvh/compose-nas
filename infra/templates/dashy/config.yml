@@ -16,6 +16,10 @@ sections:
         description: Comics and ebooks reader
         icon: mdi-view-grid-outline
         url: https://kavita.${HOSTNAME}
+      - title: Komga
+        description: Comics reader
+        icon: mdi-view-grid-outline
+        url: https://komga.${HOSTNAME}
       - title: EmulatorJS
         description: Game emulation
         icon: mdi-controller-classic

@@ -1,0 +1,18 @@
+services:
+  komga:
+    image: gotson/komga:latest
+    container_name: komga
+    networks:
+      - nas
+    volumes:
+      - /mnt/media/books:/data
+      - config:/config
+    restart: unless-stopped
+
+networks:
+  nas:
+    name: compose-nas
+    external: true
+
+volumes:
+  config:
